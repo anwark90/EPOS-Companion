@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EPOS Companion</title>
+<meta name="description" content="EPOS Companion: a Windows till for corner shops, built in C++, with an iPhone app that runs your shop over the shop Wi-Fi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Geist:wght@400;500;600;700&family=Martian+Mono:wdth,wght@75..112.5,400..700&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="mark" viewBox="269 244 486 536">
+      <rect x="269" y="244" width="486" height="102" rx="51" style="fill:var(--mark-a,#F4F1EA)"/>
+      <rect x="269" y="461" width="345" height="102" rx="51" style="fill:var(--mark-a,#F4F1EA)"/>
+      <polygon points="269,679 755,679 755,780 704,742 652,780 601,742 550,780 499,742 448,780 397,742 345,780 269,729" style="fill:var(--mark-b,#E8542F)"/>
+    </symbol>
+    <symbol id="i-till" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3 10h18"/></symbol>
+    <symbol id="i-dash" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.6"/><rect x="13" y="4" width="7" height="7" rx="1.6"/><rect x="4" y="13" width="7" height="7" rx="1.6"/><rect x="13" y="13" width="7" height="7" rx="1.6"/></symbol>
+    <symbol id="i-stock" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></symbol>
+    <symbol id="i-orders" viewBox="0 0 24 24"><path d="M2.5 6.5h11v9.5h-11zM13.5 10h4l3 3.2V16h-7"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></symbol>
+    <symbol id="i-eod" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12.5h6M9 16h6"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.6M12 18.6v2.6M2.8 12h2.6M18.6 12h2.6M5.5 5.5l1.9 1.9M16.6 16.6l1.9 1.9M5.5 18.5l1.9-1.9M16.6 7.4l1.9-1.9"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r=".9"/><circle cx="4" cy="12" r=".9"/><circle cx="4" cy="18" r=".9"/></symbol>
+    <symbol id="i-refund" viewBox="0 0 24 24"><path d="M9 7H4V2"/><path d="M4.5 7A8.5 8.5 0 1 1 3.6 13"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.2-3.8 4-5.6 7.5-5.6s6.3 1.8 7.5 5.6"/></symbol>
+    <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="14" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="3.5" y="14" width="6.5" height="6.5" rx="1"/><path d="M14 14h2.5v2.5H14zM18 18h2.5v2.5H18zM14 18.5h1.5M18.5 14v2"/></symbol>
+    <symbol id="i-barcode" viewBox="0 0 24 24"><path d="M3 5h2v14H3zM7 5h1v14H7zM10 5h2v14h-2zM14 5h1v14h-1zM17 5h1.5v14H17zM20 5h1v14h-1z"/></symbol>
+    <symbol id="i-status" viewBox="0 0 68 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0.5" width="3" height="11.5" rx="1"/><path d="M29.5 11.6l2-2.3a3 3 0 0 0-4 0zM25.4 7.2a6.2 6.2 0 0 1 8.2 0l-1.3 1.5a4.2 4.2 0 0 0-5.6 0zM22.7 4.1a10 10 0 0 1 13.6 0L35 5.6a8 8 0 0 0-11 0z"/><rect x="41.5" y="1" width="22" height="10" rx="3" fill="none" stroke="currentColor" stroke-opacity=".45"/><rect x="43.5" y="3" width="17" height="6" rx="1.5"/><rect x="64.5" y="4.2" width="1.6" height="3.6" rx=".8" opacity=".45"/></symbol>
+  </defs>
+</svg>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="EPOS Companion home">
+      <span class="tile mark"><svg viewBox="0 0 486 536" aria-hidden="true"><use href="#mark"/></svg></span>
+      <span>EPOS Companion</span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#demo">Demo</a>
+      <a href="#till">The till</a>
+      <a href="#app">The app</a>
+      <a href="#features">Features</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-primary" href="#demo">Try the demo</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero-copy">
+        <p class="eyebrow">EPOS for corner shops + iPhone app</p>
+        <h1 class="display" id="hero-title">Your till, in your <span class="accent">pocket.</span></h1>
+        <p class="lede">EPOS Companion is a till for corner shops and convenience stores. It runs on a Windows PC at the counter, and its iPhone app connects over your shop's Wi-Fi, so you can check takings, stock and the end of day from anywhere in the shop.</p>
+        <div class="btns">
+          <a class="btn btn-primary" href="#demo">Try the live demo
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="#till">See the real till</a>
+        </div>
+        <ul class="specs" aria-label="At a glance">
+          <li>Windows till in C++</li>
+          <li>Barcode scanning</li>
+          <li>Runs on your shop Wi-Fi</li>
+        </ul>
+      </div>
+      <div class="stage" id="stage">
+        <canvas id="scene" aria-label="3D model of the EPOS Companion till showing its real screens, with a receipt printer and an iPhone running the app" role="img"></canvas>
+        <div class="stage-fallback" aria-hidden="true">
+          <span class="tile mark"><svg viewBox="0 0 486 536"><use href="#mark"/></svg></span>
+        </div>
+        <span class="stage-hint" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12h16M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>
+          Drag to turn
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <div class="tear" style="--from:var(--paper);--to:var(--night)" aria-hidden="true"></div>
+
+  <section class="band" id="demo" aria-labelledby="demo-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Live demo</p>
+        <h2 class="display" id="demo-title">Ring up a sale. Watch it land on your phone.</h2>
+        <p class="lede">A working copy of the till's Point of Sale screen. Scan an item or press a till key, pick card or cash, then complete the sale. The receipt prints and the iPhone dashboard updates straight away.</p>
+      </div>
+
+      <div class="demo-grid">
+        <div>
+          <div class="monitor">
+            <div class="glass">
+              <div class="pos" role="group" aria-label="Till demo">
+                <div class="rail" aria-hidden="true">
+                  <span class="logo"><svg viewBox="0 0 24 24"><path d="M12 2.5l6.5 9.5-6.5 9.5L5.5 12z"/></svg></span>
+                  <span class="new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+                  <i class="on"><svg><use href="#i-till"/></svg></i>
+                  <i><svg><use href="#i-refund"/></svg></i>
+                  <i><svg><use href="#i-dash"/></svg></i>
+                  <i><svg><use href="#i-list"/></svg></i>
+                  <i><svg><use href="#i-orders"/></svg></i>
+                  <i><svg><use href="#i-eod"/></svg></i>
+                  <i><svg><use href="#i-user"/></svg></i>
+                  <i><svg><use href="#i-settings"/></svg></i>
+                </div>
+                <div class="pos-main">
+                  <div class="pos-top">
+                    <div><h3>Point of Sale</h3><span class="sub">Scan a barcode or press a till key, then take payment</span></div>
+                    <span class="meta" id="pos-sub">Till 1 · Sale #0428 · 21:42</span>
+                  </div>
+                  <div class="pos-body">
+                    <div class="pcard pos-left">
+                      <div class="scanrow">
+                        <div class="search">
+                          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-barcode"/></svg>
+                          <label class="sr" for="q">Scan a barcode, or type a product name</label>
+                          <input id="q" type="search" placeholder="Scan or type a product" autocomplete="off" aria-controls="results">
+                          <ul class="results" id="results" hidden></ul>
+                        </div>
+                        <button class="scan" id="scan" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-barcode"/></svg>Scan<span class="beam"></span></button>
+                      </div>
+                      <div class="keys-head"><b>Till keys</b><span>For anything that never passes a scanner</span></div>
+                      <div class="keys" id="keys"></div>
+                    </div>
+                    <div class="pcard sale">
+                      <div class="sale-head"><b>Current sale</b><span class="chip" id="item-count">4 lines</span><button class="clear-btn" id="clear" type="button">Clear</button></div>
+                      <div class="cols" aria-hidden="true"><span>Item</span><span>Qty</span><span>Total</span></div>
+                      <ul class="lines" id="lines"></ul>
+                      <div class="sums">
+                        <div><span>Items</span><span id="n-items">7</span></div>
+                        <div><span>Subtotal</span><span id="subtotal">£9.05</span></div>
+                        <div><span>VAT (included)</span><span id="vat">£0.99</span></div>
+                      </div>
+                      <div class="sum-total"><span>Total</span><b id="total">£9.05</b></div>
+                      <div class="seg" role="radiogroup" aria-label="Payment type">
+                        <input type="radio" name="pay" id="pay-card" value="Card" checked><label for="pay-card">Card</label>
+                        <input type="radio" name="pay" id="pay-cash" value="Cash"><label for="pay-cash">Cash</label>
+                      </div>
+                      <button class="pay-btn" id="charge" type="button">Complete sale · £9.05</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="printer" aria-label="Receipt printer">
+            <div class="slot"></div>
+            <div class="feed" id="feed"><div class="placeholder">Receipts print here</div></div>
+          </div>
+        </div>
+
+        <div class="phone-col">
+          <div class="tilt" id="tilt">
+            <div class="iphone">
+              <div class="scr">
+                <div class="island"></div>
+                <div class="notif" id="notif" aria-hidden="true">
+                  <span class="tile mark"><svg viewBox="0 0 486 536"><use href="#mark"/></svg></span>
+                  <div><b>Sale on Till 1</b><span id="notif-s">£9.05 · Card · 7 items</span></div>
+                  <em>now</em>
+                </div>
+                <div class="sb"><span id="phone-clock">21:42</span><svg viewBox="0 0 68 12" aria-hidden="true"><use href="#i-status"/></svg></div>
+                <div class="scroll">
+                  <div class="sbpad"></div>
+                  <div class="dash">
+                    <div class="d-head"><h4>Dashboard</h4><span class="conn">Connected</span></div>
+                    <div class="d-card d-take">
+                      <small>Today's takings</small>
+                      <strong id="takings">£1,284.60</strong>
+                      <span class="pill-up" id="vs">▲ 8.4% vs last Wednesday</span>
+                    </div>
+                    <div class="d-stats">
+                      <div class="d-card"><small>Sales</small><b id="k-sales">142</b></div>
+                      <div class="d-card"><small>Avg basket</small><b id="k-avg">£9.05</b></div>
+                      <div class="d-card"><small>Items sold</small><b id="k-items">418</b></div>
+                    </div>
+                    <div class="d-card">
+                      <div class="d-row"><b>Sales by hour</b><small>Busiest 6pm</small></div>
+                      <div class="d-bars" id="bars"></div>
+                      <div class="d-axis"><span>7am</span><span>11am</span><span>3pm</span><span>7pm</span><span>9pm</span></div>
+                    </div>
+                    <div class="d-card">
+                      <b>How people paid</b>
+                      <div class="split"><i id="split-card" style="background:var(--a-blue)"></i><i id="split-cash" style="background:var(--a-orange)"></i></div>
+                      <div class="legend">
+                        <div class="d-row" style="--dot:var(--a-blue)"><span>Card · <span id="n-card">98</span></span><span id="v-card">£936.20</span></div>
+                        <div class="d-row" style="--dot:var(--a-orange)"><span>Cash · <span id="n-cash">44</span></span><span id="v-cash">£348.40</span></div>
+                      </div>
+                    </div>
+                    <div class="d-card">
+                      <b>Top sellers today</b>
+                      <ul class="tops" id="tops"></ul>
+                    </div>
+                    <div class="d-low"><div><b>3 items running low</b><small>Bread, Cheddar, Eggs</small></div><span aria-hidden="true">›</span></div>
+                    <div class="d-tabpad"></div>
+                  </div>
+                </div>
+                <div class="a-tabbar" aria-hidden="true">
+                  <span><svg><use href="#i-till"/></svg>Till</span>
+                  <span class="on"><svg><use href="#i-dash"/></svg>Dash</span>
+                  <span><svg><use href="#i-stock"/></svg>Stock</span>
+                  <span><svg><use href="#i-orders"/></svg>Orders</span>
+                  <span><svg><use href="#i-eod"/></svg>EOD</span>
+                  <span><svg><use href="#i-settings"/></svg>Settings</span>
+                </div>
+                <div class="home"></div>
+              </div>
+            </div>
+          </div>
+          <span class="phone-cap">EPOS Companion for iPhone</span>
+        </div>
+      </div>
+      <p class="demo-note">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01" stroke-linecap="round"/></svg>
+        Example products and figures. Nothing you do here is saved.
+      </p>
+      <p class="sr" aria-live="polite" id="live"></p>
+    </div>
+  </section>
+
+  <div class="tear" style="--from:var(--night);--to:var(--paper)" aria-hidden="true"></div>
+
+  <section class="sec" id="till" aria-labelledby="till-title">
+    <div class="wrap pc-wrap">
+      <div class="sec-head" style="margin-bottom:8px">
+        <p class="eyebrow">The till · Windows PC</p>
+        <h2 class="display" id="till-title">The real till, screen by screen.</h2>
+        <p class="lede">EPOS Companion runs on a Windows PC at the counter, with a barcode scanner and a thermal receipt printer. Here's every screen of the till, filled with a day's example trading. Click one to see it full size.</p>
+      </div>
+      <div class="pc-tabs" role="tablist" aria-label="Till screens" id="pc-tabs"></div>
+      <div class="pc-stage" id="pc-stage">
+        <div class="monitor" id="pc-monitor">
+          <div class="glass" id="pc-glass" tabindex="0" role="button" aria-label="Open this screen full size">
+            <span class="zoom-hint" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6"/></svg>
+              Full size
+            </span>
+          </div>
+        </div>
+        <div class="stand" aria-hidden="true"><div class="neck"></div><div class="foot"></div></div>
+      </div>
+      <div class="pc-desc" role="tabpanel" id="pc-panel" aria-live="polite">
+        <div>
+          <span class="count" id="pc-count">01 / 09 · POINT OF SALE</span>
+          <h3 id="pc-title">Point of Sale</h3>
+        </div>
+        <div class="pc-right">
+          <p id="pc-text"></p>
+          <ul class="chips" id="pc-chips"></ul>
+          <div class="tools">
+            <button class="round" id="pc-prev" type="button" aria-label="Previous screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <button class="round" id="pc-next" type="button" aria-label="Next screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+            <span>EPOS System 1.2.1 · example data</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec ruled tour" id="app" aria-labelledby="app-title">
+    <div class="wrap tour-grid">
+      <div class="sec-head">
+        <p class="eyebrow">The iPhone app</p>
+        <h2 class="display" id="app-title">Six tabs. The whole shop.</h2>
+        <p class="lede">These are real screens from EPOS Companion for iPhone. Pick a tab, then scroll the screen to see everything on it.</p>
+      </div>
+      <div class="tour-stage" id="tour-stage"></div>
+      <div class="apptabs" role="tablist" aria-label="App screens" id="apptabs"></div>
+      <div class="tour-desc" role="tabpanel" id="tour-panel" aria-live="polite">
+        <span class="tour-count" id="tour-count">01 / 06 · TILL</span>
+        <h3 id="tour-title">Point of Sale</h3>
+        <p id="tour-text"></p>
+        <ul class="chips" id="tour-chips"></ul>
+        <div class="tools">
+          <button class="round" id="tour-prev" type="button" aria-label="Previous screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="round" id="tour-next" type="button" aria-label="Next screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+          <span>Scroll the phone screen</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec ruled" id="features" aria-labelledby="feat-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">What's included</p>
+        <h2 class="display" id="feat-title">One system, two screens.</h2>
+        <p class="lede">The till keeps the queue moving. The app puts the numbers in your hand on the shop floor, in the stockroom or out back.</p>
+      </div>
+      <div class="receipts">
+        <div class="rc-wrap">
+          <article class="rc" aria-labelledby="rc1">
+            <div class="rc-head">
+              <svg viewBox="0 0 486 536" aria-hidden="true"><use href="#mark"/></svg>
+              <b id="rc1">AT THE COUNTER</b>
+              <span>EPOS COMPANION · WINDOWS TILL</span>
+            </div>
+            <hr>
+            <ul class="items">
+              <li><div class="ln"><span>BARCODE SCANNING</span><i></i><em>INCL.</em></div><p>Scan a product and it's on the sale. Scan something the till doesn't know and you can add it on the spot, then carry on selling.</p></li>
+              <li><div class="ln"><span>TILL KEYS</span><i></i><em>INCL.</em></div><p>Keys for loose items, plus category keys that open what's inside. Right-click a key to edit it.</p></li>
+              <li><div class="ln"><span>THERMAL RECEIPTS</span><i></i><em>INCL.</em></div><p>Laid out for 58mm or 80mm paper, with your shop's details and a live preview as you change them.</p></li>
+              <li><div class="ln"><span>REFUNDS</span><i></i><em>INCL.</em></div><p>Find the receipt, choose what's coming back and why, and put the goods back into stock.</p></li>
+              <li><div class="ln"><span>STOCK ORDERS</span><i></i><em>INCL.</em></div><p>Raise orders to suppliers, then book in each delivery in full or in part.</p></li>
+              <li><div class="ln"><span>STAFF LOGINS</span><i></i><em>INCL.</em></div><p>Cashiers see the till only. Administrators also see the Dashboard, Inventory and End of Day.</p></li>
+            </ul>
+            <hr>
+            <div class="rc-foot"><span>6 ITEMS</span><b>The till</b></div>
+            <svg class="code" data-seed="7" viewBox="0 0 200 38" preserveAspectRatio="none" aria-hidden="true"></svg>
+          </article>
+        </div>
+        <div class="rc-wrap">
+          <article class="rc" aria-labelledby="rc2">
+            <div class="rc-head">
+              <svg viewBox="0 0 486 536" aria-hidden="true"><use href="#mark"/></svg>
+              <b id="rc2">IN YOUR POCKET</b>
+              <span>EPOS COMPANION · IPHONE</span>
+            </div>
+            <hr>
+            <ul class="items">
+              <li><div class="ln"><span>DASHBOARD</span><i></i><em>INCL.</em></div><p>Takings against the same day last week, plus sales, average basket, items sold and your busiest hour.</p></li>
+              <li><div class="ln"><span>A TILL ON YOUR PHONE</span><i></i><em>INCL.</em></div><p>Scan barcodes, use till keys and take payment from the iPhone when the counter's busy.</p></li>
+              <li><div class="ln"><span>STOCK</span><i></i><em>INCL.</em></div><p>Every product's count, with low and out-of-stock lines flagged. Scan deliveries straight in.</p></li>
+              <li><div class="ln"><span>SUPPLIER ORDERS</span><i></i><em>INCL.</em></div><p>Draft orders to your wholesalers and follow them until they're received.</p></li>
+              <li><div class="ln"><span>END OF DAY</span><i></i><em>INCL.</em></div><p>Count the cash drawer, see any difference, then print the Z report and close the day.</p></li>
+              <li><div class="ln"><span>SHOP NETWORK ONLY</span><i></i><em>INCL.</em></div><p>The app talks to your till over the shop Wi-Fi and never contacts the internet.</p></li>
+            </ul>
+            <hr>
+            <div class="rc-foot"><span>6 ITEMS</span><b>The app</b></div>
+            <svg class="code" data-seed="19" viewBox="0 0 200 38" preserveAspectRatio="none" aria-hidden="true"></svg>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec ruled" id="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">How it works</p>
+        <h2 class="display" id="how-title">Up and running in three steps.</h2>
+      </div>
+      <ol class="steps">
+        <li>
+          <svg viewBox="0 0 240 120" aria-hidden="true">
+            <rect class="ill-a" x="0" y="0" width="240" height="120" rx="18"/>
+            <rect class="ill-p" x="58" y="14" width="124" height="92" rx="10"/>
+            <g class="ill-b"><rect x="70" y="27" width="2" height="10"/><rect x="74" y="27" width="4" height="10"/><rect x="80" y="27" width="1.5" height="10"/><rect x="83" y="27" width="3" height="10"/><rect x="88" y="27" width="2" height="10"/></g>
+            <rect class="ill-m" x="100" y="28" width="66" height="8" rx="4" opacity=".5"/>
+            <g class="ill-b"><rect x="70" y="45" width="3" height="10"/><rect x="75" y="45" width="1.5" height="10"/><rect x="78" y="45" width="4" height="10"/><rect x="84" y="45" width="2" height="10"/><rect x="88" y="45" width="2" height="10"/></g>
+            <rect class="ill-m" x="100" y="46" width="50" height="8" rx="4" opacity=".5"/>
+            <rect class="ill-c" x="70" y="64" width="22" height="8" rx="4"/>
+            <rect class="ill-m" x="100" y="64" width="58" height="8" rx="4" opacity=".5"/>
+            <rect class="ill-c" x="70" y="82" width="22" height="8" rx="4"/>
+            <rect class="ill-m" x="100" y="82" width="40" height="8" rx="4" opacity=".5"/>
+          </svg>
+          <span class="num">STEP 01</span>
+          <h3>Add your products</h3>
+          <p>Scan them in one by one, or import your wholesaler's .csv list in one go. Set till keys for loose items.</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 240 120" aria-hidden="true">
+            <rect class="ill-a" x="0" y="0" width="240" height="120" rx="18"/>
+            <rect class="ill-b" x="40" y="16" width="160" height="88" rx="12"/>
+            <rect class="ill-c" x="52" y="28" width="82" height="16" rx="6"/>
+            <rect class="ill-p" x="52" y="50" width="25" height="18" rx="5" opacity=".3"/>
+            <rect class="ill-p" x="80.5" y="50" width="25" height="18" rx="5" opacity=".3"/>
+            <rect class="ill-p" x="109" y="50" width="25" height="18" rx="5" opacity=".3"/>
+            <rect class="ill-p" x="52" y="72" width="25" height="18" rx="5" opacity=".3"/>
+            <rect class="ill-p" x="80.5" y="72" width="25" height="18" rx="5" opacity=".3"/>
+            <rect class="ill-p" x="109" y="72" width="25" height="18" rx="5" opacity=".3"/>
+            <rect class="ill-p" x="142" y="28" width="46" height="44" rx="6" opacity=".14"/>
+            <rect class="ill-c" x="142" y="76" width="46" height="14" rx="7"/>
+          </svg>
+          <span class="num">STEP 02</span>
+          <h3>Sell at the counter</h3>
+          <p>Scan or press a till key, then complete the sale. The receipt prints on your thermal printer.</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 240 120" aria-hidden="true">
+            <rect class="ill-a" x="0" y="0" width="240" height="120" rx="18"/>
+            <rect class="ill-b" x="92" y="10" width="56" height="110" rx="14"/>
+            <rect class="ill-p" x="97" y="15" width="46" height="105" rx="10"/>
+            <g class="ill-b"><rect x="105" y="30" width="12" height="12" rx="2"/><rect x="123" y="30" width="12" height="12" rx="2"/><rect x="105" y="48" width="12" height="12" rx="2"/><rect x="123" y="48" width="5" height="5"/><rect x="130" y="55" width="5" height="5"/></g>
+            <rect class="ill-c" x="104" y="76" width="32" height="10" rx="5"/>
+            <path d="M164 46c7 7 7 22 0 29M175 37c13 13 13 34 0 47" fill="none" stroke="var(--tear)" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          <span class="num">STEP 03</span>
+          <h3>Pair your iPhone</h3>
+          <p>Scan the pairing code in the till's Settings with your iPhone camera. The app connects over the shop Wi-Fi.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec ruled faq" id="faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Questions</p>
+        <h2 class="display" id="faq-title">Before you open up.</h2>
+      </div>
+      <div class="qs">
+        <details open>
+          <summary>What do I need at the counter?</summary>
+          <p>A Windows PC to run the till, a USB barcode scanner that types like a keyboard, and a thermal receipt printer for 58mm or 80mm paper. The iPhone app connects to the till over the shop Wi-Fi.</p>
+        </details>
+        <details>
+          <summary>Does the app need the internet?</summary>
+          <p>No. The app never contacts the internet. It only talks to your till over the shop network, so your sales data stays in the shop.</p>
+        </details>
+        <details>
+          <summary>Can I import my product list?</summary>
+          <p>Yes. Load a .csv file from your wholesaler. Only the product name is required, and columns like "Product Name", "RRP" or "Case Size" are matched for you.</p>
+        </details>
+        <details>
+          <summary>Can staff use the till without seeing the takings?</summary>
+          <p>Yes. Give them a Cashier login and they see the till only. Administrators also see the Dashboard, Inventory, End of Day and staff settings.</p>
+        </details>
+        <details>
+          <summary>How does the end of day work?</summary>
+          <p>End of Day shows net takings, card and cash totals, the cash drawer, VAT, best sellers and every receipt. Print an X read during the day, then close the day when you shut.</p>
+        </details>
+        <details>
+          <summary>When can I get the iPhone app?</summary>
+          <p>EPOS Companion is coming to the App Store soon.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <div class="tear" style="--from:var(--paper);--to:var(--night)" aria-hidden="true"></div>
+
+  <section class="band close" id="get" aria-labelledby="get-title">
+    <div class="wrap">
+      <div class="close-copy">
+        <p class="eyebrow">Built in C++</p>
+        <h2 class="display" id="get-title">Ready when you open the doors.</h2>
+        <p class="lede">The till is native C++ with Qt 6, so it keeps pace with a busy counter. The app talks to it directly over your shop network, with nothing sent to the internet.</p>
+        <ul class="specrows">
+          <li><span>TILL</span><i></i><span>WINDOWS PC</span></li>
+          <li><span>BUILT WITH</span><i></i><span>C++ · QT 6</span></li>
+          <li><span>APP</span><i></i><span>IPHONE</span></li>
+          <li><span>CONNECTION</span><i></i><span>SHOP WI-FI</span></li>
+          <li><span>RECEIPTS</span><i></i><span>58 / 80MM THERMAL</span></li>
+        </ul>
+        <div class="btns">
+          <span class="store" role="img" aria-label="Coming soon to the App Store">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18.5h3"/></svg>
+            <span><small>Coming soon to the</small><b>App Store</b></span>
+          </span>
+          <a class="btn btn-ghost" href="#demo">Try the demo</a>
+        </div>
+      </div>
+      <div class="logo3d" id="logo3d" aria-hidden="true">
+        <div class="l3" id="l3"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tear" style="--from:var(--night);--to:var(--paper)" aria-hidden="true"></div>
+</main>
+
+<footer class="foot-site">
+  <div class="wrap">
+    <span class="tile mark"><svg viewBox="0 0 486 536" aria-hidden="true"><use href="#mark"/></svg></span>
+    <b>EPOS COMPANION</b>
+    <span>Windows till + iPhone app</span>
+    <svg class="code" data-seed="3" viewBox="0 0 200 38" preserveAspectRatio="none" aria-hidden="true"></svg>
+    <nav aria-label="Footer">
+      <a href="#demo">Demo</a><a href="#till">The till</a><a href="#app">The app</a><a href="#features">Features</a><a href="#faq">FAQ</a>
+    </nav>
+    <span>Thank you for visiting · © <span id="yr">2026</span></span>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-labelledby="lb-title">
+  <div class="bar"><span id="lb-title">Point of Sale</span><button type="button" id="lb-close">Close</button></div>
+  <div class="pane" id="lb-pane"><img id="lb-img" alt=""></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
